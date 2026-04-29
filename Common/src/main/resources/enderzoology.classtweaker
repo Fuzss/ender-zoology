@@ -1,4 +1,4 @@
-accessWidener   v2  named
+classTweaker    v2  official
 extendable  method  net/minecraft/world/entity/monster/skeleton/AbstractSkeleton    getStepSound    ()Lnet/minecraft/sounds/SoundEvent;
 accessible  field   net/minecraft/world/entity/monster/Witch    healRaidersGoal Lnet/minecraft/world/entity/ai/goal/target/NearestHealableRaiderTargetGoal;
 accessible  field   net/minecraft/world/entity/monster/Witch    attackPlayersGoal   Lnet/minecraft/world/entity/ai/goal/target/NearestAttackableWitchTargetGoal;
