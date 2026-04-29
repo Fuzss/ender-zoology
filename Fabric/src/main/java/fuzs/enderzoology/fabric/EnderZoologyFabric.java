@@ -1,9 +1,9 @@
 package fuzs.enderzoology.fabric;
 
 import com.google.common.collect.ImmutableMap;
-import fuzs.enderzoology.EnderZoology;
+import fuzs.enderzoology.common.EnderZoology;
 import fuzs.enderzoology.fabric.init.FabricModRegistry;
-import fuzs.enderzoology.init.ModEntityTypes;
+import fuzs.enderzoology.common.init.ModEntityTypes;
 import fuzs.puzzleslib.common.api.core.v1.ModConstructor;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.world.entity.EntityType;

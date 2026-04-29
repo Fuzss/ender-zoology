@@ -1,6 +1,6 @@
 package fuzs.enderzoology.fabric.services;
 
-import fuzs.enderzoology.services.CommonAbstractions;
+import fuzs.enderzoology.common.services.CommonAbstractions;
 import net.fabricmc.fabric.api.entity.event.v1.ServerLivingEntityEvents;
 import net.minecraft.world.entity.ConversionParams;
 import net.minecraft.world.entity.EntityType;

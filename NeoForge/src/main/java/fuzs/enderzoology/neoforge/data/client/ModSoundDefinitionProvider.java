@@ -1,7 +1,7 @@
 package fuzs.enderzoology.neoforge.data.client;
 
-import fuzs.enderzoology.EnderZoology;
-import fuzs.enderzoology.init.ModSoundEvents;
+import fuzs.enderzoology.common.EnderZoology;
+import fuzs.enderzoology.common.init.ModSoundEvents;
 import fuzs.puzzleslib.common.api.data.v2.core.DataProviderContext;
 import fuzs.puzzleslib.neoforge.api.client.data.v2.AbstractSoundProvider;
 import net.minecraft.sounds.SoundEvents;

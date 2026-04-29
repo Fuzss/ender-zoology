@@ -1,7 +1,7 @@
 package fuzs.enderzoology.fabric.client;
 
-import fuzs.enderzoology.EnderZoology;
-import fuzs.enderzoology.client.EnderZoologyClient;
+import fuzs.enderzoology.common.EnderZoology;
+import fuzs.enderzoology.common.client.EnderZoologyClient;
 import fuzs.puzzleslib.common.api.client.core.v1.ClientModConstructor;
 import net.fabricmc.api.ClientModInitializer;
 

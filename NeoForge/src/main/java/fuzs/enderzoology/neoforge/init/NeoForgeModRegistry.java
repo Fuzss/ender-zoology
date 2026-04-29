@@ -1,8 +1,8 @@
 package fuzs.enderzoology.neoforge.init;
 
-import fuzs.enderzoology.EnderZoology;
+import fuzs.enderzoology.common.EnderZoology;
 import fuzs.enderzoology.neoforge.world.level.block.NeoForgeChargeBlock;
-import fuzs.enderzoology.world.level.EnderExplosionType;
+import fuzs.enderzoology.common.world.level.EnderExplosionType;
 import fuzs.puzzleslib.common.api.init.v3.registry.RegistryManager;
 import net.minecraft.core.Holder;
 import net.minecraft.world.level.block.Block;

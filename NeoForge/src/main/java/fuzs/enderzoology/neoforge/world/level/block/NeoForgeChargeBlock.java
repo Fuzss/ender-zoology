@@ -1,7 +1,7 @@
 package fuzs.enderzoology.neoforge.world.level.block;
 
-import fuzs.enderzoology.world.level.EnderExplosionHelper;
-import fuzs.enderzoology.world.level.EnderExplosionType;
+import fuzs.enderzoology.common.world.level.EnderExplosionHelper;
+import fuzs.enderzoology.common.world.level.EnderExplosionType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;

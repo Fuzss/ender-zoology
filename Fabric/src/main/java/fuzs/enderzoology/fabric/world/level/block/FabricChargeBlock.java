@@ -1,7 +1,7 @@
 package fuzs.enderzoology.fabric.world.level.block;
 
-import fuzs.enderzoology.world.level.EnderExplosionHelper;
-import fuzs.enderzoology.world.level.EnderExplosionType;
+import fuzs.enderzoology.common.world.level.EnderExplosionHelper;
+import fuzs.enderzoology.common.world.level.EnderExplosionType;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -92,7 +92,7 @@ public class FabricChargeBlock extends TntBlock {
                 player.awardStat(Stats.ITEM_USED.get(item));
             } else if (level instanceof ServerLevel serverLevel) {
                 if (!serverLevel.getGameRules().get(GameRules.TNT_EXPLODES)) {
-                    player.displayClientMessage(Component.translatable("block.minecraft.tnt.disabled"), true);
+                    player.sendOverlayMessage(Component.translatable("block.minecraft.tnt.disabled"));
                     return InteractionResult.PASS;
                 }
             }
