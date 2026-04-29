@@ -11,7 +11,7 @@ import fuzs.enderzoology.data.tags.ModItemTagProvider;
 import fuzs.enderzoology.init.ModRegistry;
 import fuzs.enderzoology.neoforge.data.ModDataMapProvider;
 import fuzs.enderzoology.neoforge.init.NeoForgeModRegistry;
-import fuzs.puzzleslib.api.core.v1.ModConstructor;
+import fuzs.puzzleslib.common.api.core.v1.ModConstructor;
 import fuzs.puzzleslib.neoforge.api.data.v2.core.DataProviderHelper;
 import net.neoforged.fml.common.Mod;
 

@@ -24,7 +24,7 @@ public class EnderTeleportHelper {
     }
 
     public static void teleportEntity(ServerLevel level, LivingEntity entity, int teleportRange, boolean endermiteChance, boolean forceTeleport) {
-        if (forceTeleport || !entity.getType().is(ModRegistry.CONCUSSION_IMMUNE_ENTITY_TYPE_TAG)) {
+        if (forceTeleport || !entity.is(ModRegistry.CONCUSSION_IMMUNE_ENTITY_TYPE_TAG)) {
             for (int i = 0; i < 16; ++i) {
                 double randomX = entity.getX() + (entity.getRandom().nextDouble() - 0.5) * teleportRange * 2;
                 double randomY = Mth.clamp(
@@ -49,7 +49,7 @@ public class EnderTeleportHelper {
                             1.0F,
                             1.0F);
                     entity.playSound(soundEvent, 1.0F, 1.0F);
-                    if (endermiteChance && level.random.nextFloat() < 0.05F && level.getGameRules()
+                    if (endermiteChance && level.getRandom().nextFloat() < 0.05F && level.getGameRules()
                             .get(GameRules.SPAWN_MOBS)) {
                         Endermite endermite = EntityType.ENDERMITE.create(level, EntitySpawnReason.TRIGGERED);
                         if (endermite != null) {

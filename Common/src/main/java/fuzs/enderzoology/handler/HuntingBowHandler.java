@@ -1,8 +1,8 @@
 package fuzs.enderzoology.handler;
 
-import fuzs.puzzleslib.api.event.v1.core.EventResult;
-import fuzs.puzzleslib.api.event.v1.data.MutableInt;
-import fuzs.puzzleslib.api.item.v2.EnchantingHelper;
+import fuzs.puzzleslib.common.api.event.v1.core.EventResult;
+import fuzs.puzzleslib.common.api.event.v1.data.MutableInt;
+import fuzs.puzzleslib.common.api.item.v2.EnchantingHelper;
 import net.minecraft.core.Holder;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.LivingEntity;

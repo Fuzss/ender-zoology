@@ -1,9 +1,10 @@
 {
+    "minecraft": "26.1.2",
     "mod": {
         "id": "enderzoology",
         "group": "fuzs.enderzoology",
         "name": "Ender Zoology",
-        "version": "21.11.0",
+        "version": "26.1.0",
         "authors": [
             "Fuzs"
         ],
@@ -36,13 +37,13 @@
     ],
     "links": [
         {
-            "name": "github",
-            "slug": "enderzoology"
-        },
-        {
             "name": "curseforge",
             "slug": "ender-zoology",
             "id": "857968"
+        },
+        {
+            "name": "github",
+            "slug": "ender-zoology"
         },
         {
             "name": "modrinth",

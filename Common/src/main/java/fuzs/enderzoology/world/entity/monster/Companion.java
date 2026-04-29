@@ -15,7 +15,7 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public interface CompanionMob<T extends Mob> {
+public interface Companion<T extends Mob> {
     UniformInt ALERT_INTERVAL = TimeUtil.rangeOfSeconds(4, 6);
 
     Mob getCompanionMob();

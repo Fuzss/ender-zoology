@@ -1,6 +1,6 @@
 package fuzs.enderzoology.services;
 
-import fuzs.puzzleslib.api.core.v1.ServiceProviderHelper;
+import fuzs.puzzleslib.common.api.core.v1.ServiceProviderHelper;
 import net.minecraft.world.entity.ConversionParams;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;

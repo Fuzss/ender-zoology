@@ -4,17 +4,17 @@ import fuzs.enderzoology.EnderZoology;
 import fuzs.enderzoology.client.init.ModModelLayers;
 import fuzs.enderzoology.client.renderer.entity.state.WitherCatRenderState;
 import fuzs.enderzoology.world.entity.monster.WitherCat;
-import net.minecraft.client.model.animal.feline.FelineModel;
+import net.minecraft.client.model.animal.feline.AdultFelineModel;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.MobRenderer;
 import net.minecraft.resources.Identifier;
 
-public class WitherCatRenderer extends MobRenderer<WitherCat, WitherCatRenderState, FelineModel<WitherCatRenderState>> {
+public class WitherCatRenderer extends MobRenderer<WitherCat, WitherCatRenderState, AdultFelineModel<WitherCatRenderState>> {
     private static final Identifier TEXTURE_LOCATION = EnderZoology.id("textures/entity/cat/wither_cat.png");
     private static final Identifier ANGRY_TEXTURE_LOCATION = EnderZoology.id("textures/entity/cat/wither_cat_angry.png");
 
     public WitherCatRenderer(EntityRendererProvider.Context context) {
-        super(context, new FelineModel<>(context.bakeLayer(ModModelLayers.WITHER_CAT)), 0.4F);
+        super(context, new AdultFelineModel<>(context.bakeLayer(ModModelLayers.WITHER_CAT)), 0.4F);
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import fuzs.enderzoology.EnderZoology;
 import fuzs.enderzoology.fabric.init.FabricModRegistry;
 import fuzs.enderzoology.init.ModEntityTypes;
-import fuzs.puzzleslib.api.core.v1.ModConstructor;
+import fuzs.puzzleslib.common.api.core.v1.ModConstructor;
 import net.fabricmc.api.ModInitializer;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.sensing.VillagerHostilesSensor;

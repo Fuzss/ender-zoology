@@ -1,7 +1,7 @@
 package fuzs.enderzoology.init;
 
 import fuzs.enderzoology.world.item.enchantment.effects.TeleportEntity;
-import fuzs.puzzleslib.api.data.v2.AbstractDatapackRegistriesProvider;
+import fuzs.puzzleslib.common.api.data.v2.AbstractDatapackRegistriesProvider;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;

@@ -53,8 +53,8 @@ public class Owl extends Animal implements FlyingAnimal {
         super(entityType, level);
         this.eggTime = this.random.nextInt(2000) + 2000;
         this.moveControl = new FlyingMoveControl(this, 10, false);
-        this.setPathfindingMalus(PathType.DANGER_FIRE, -1.0F);
-        this.setPathfindingMalus(PathType.DAMAGE_FIRE, -1.0F);
+        this.setPathfindingMalus(PathType.FIRE_IN_NEIGHBOR, -1.0F);
+        this.setPathfindingMalus(PathType.FIRE, -1.0F);
         this.setPathfindingMalus(PathType.WATER, 0.0F);
     }
 
@@ -169,7 +169,7 @@ public class Owl extends Animal implements FlyingAnimal {
 
     @Override
     protected void playStepSound(BlockPos pos, BlockState state) {
-        this.playSound(SoundEvents.CHICKEN_STEP, 0.15F, 1.0F);
+        this.playSound(SoundEvents.CHICKEN_STEP.value(), 0.15F, 1.0F);
     }
 
     @Override

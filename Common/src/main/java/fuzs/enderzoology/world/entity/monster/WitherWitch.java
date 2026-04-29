@@ -28,7 +28,7 @@ import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.NonNull;
 import org.jspecify.annotations.Nullable;
 
-public class WitherWitch extends Witch implements CompanionMob<WitherCat> {
+public class WitherWitch extends Witch implements Companion<WitherCat> {
     private NearestHealableRaiderTargetGoal<WitherCat> healCatsGoal;
     private int ticksUntilNextAlert;
 

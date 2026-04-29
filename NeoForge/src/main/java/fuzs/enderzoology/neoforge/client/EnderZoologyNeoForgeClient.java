@@ -5,7 +5,7 @@ import fuzs.enderzoology.client.EnderZoologyClient;
 import fuzs.enderzoology.data.client.ModLanguageProvider;
 import fuzs.enderzoology.data.client.ModModelProvider;
 import fuzs.enderzoology.neoforge.data.client.ModSoundDefinitionProvider;
-import fuzs.puzzleslib.api.client.core.v1.ClientModConstructor;
+import fuzs.puzzleslib.common.api.client.core.v1.ClientModConstructor;
 import fuzs.puzzleslib.neoforge.api.data.v2.core.DataProviderHelper;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.fml.common.Mod;

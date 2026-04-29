@@ -1,7 +1,7 @@
 package fuzs.enderzoology.client.init;
 
 import fuzs.enderzoology.EnderZoology;
-import fuzs.puzzleslib.api.client.init.v1.ModelLayerFactory;
+import fuzs.puzzleslib.common.api.client.init.v1.ModelLayerFactory;
 import net.minecraft.client.model.geom.ModelLayerLocation;
 import net.minecraft.client.renderer.entity.ArmorModelSet;
 

@@ -59,7 +59,7 @@ public class ConcussionCreeper extends Creeper {
     }
 
     @Override
-    protected void explodeCreeper() {
+    public void explodeCreeper() {
         if (this.level() instanceof ServerLevel serverLevel) {
             float poweredMultiplier = this.isPowered() ? 2.0F : 1.0F;
             this.dead = true;

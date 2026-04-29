@@ -38,7 +38,7 @@ public class PrimedCharge extends PrimedTnt {
     private void setInitalProperties(Level level, double posX, double posY, double posZ, @Nullable LivingEntity owner) {
         // copied from PrimedTnt super as it sets the entity type
         this.setPos(posX, posY, posZ);
-        double movementOffset = level.random.nextDouble() * Math.PI * 2.0;
+        double movementOffset = level.getRandom().nextDouble() * Math.PI * 2.0;
         this.setDeltaMovement(-Math.sin(movementOffset) * 0.02, 0.2, -Math.cos(movementOffset) * 0.02);
         this.setFuse(80);
         this.xo = posX;

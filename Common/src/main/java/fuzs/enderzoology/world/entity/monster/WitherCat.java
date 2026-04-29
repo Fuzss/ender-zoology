@@ -20,6 +20,8 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.ai.goal.*;
 import net.minecraft.world.entity.ai.goal.target.HurtByTargetGoal;
 import net.minecraft.world.entity.ai.goal.target.NearestAttackableTargetGoal;
+import net.minecraft.world.entity.animal.feline.CatSoundVariant;
+import net.minecraft.world.entity.animal.feline.CatSoundVariants;
 import net.minecraft.world.entity.animal.golem.IronGolem;
 import net.minecraft.world.entity.monster.Monster;
 import net.minecraft.world.entity.monster.Witch;
@@ -28,7 +30,7 @@ import net.minecraft.world.entity.raid.Raider;
 import net.minecraft.world.level.Level;
 import org.jspecify.annotations.Nullable;
 
-public class WitherCat extends Monster implements CompanionMob<Witch> {
+public class WitherCat extends Monster implements Companion<Witch> {
     private static final Identifier SCALE_MODIFIER_ANGRY_ID = EnderZoology.id("angry");
     private static final float DEFAULT_SCALE_VALUE = (float) Attributes.SCALE.value().getDefaultValue();
     private static final float ANGRY_SCALE_VALUE = 2.0F;
@@ -195,19 +197,22 @@ public class WitherCat extends Monster implements CompanionMob<Witch> {
         super.aiStep();
     }
 
+    private CatSoundVariant.CatSoundSet getSoundSet() {
+        return SoundEvents.CAT_SOUNDS.get(CatSoundVariants.SoundSet.CLASSIC).adultSounds();
+    }
+
     @Override
-    @Nullable
     protected SoundEvent getAmbientSound() {
-        return this.isAngry() ? SoundEvents.CAT_HISS : SoundEvents.CAT_STRAY_AMBIENT;
+        return this.isAngry() ? this.getSoundSet().hissSound().value() : this.getSoundSet().strayAmbientSound().value();
     }
 
     @Override
     protected SoundEvent getHurtSound(DamageSource damageSource) {
-        return SoundEvents.CAT_HURT;
+        return this.getSoundSet().hurtSound().value();
     }
 
     @Override
     protected SoundEvent getDeathSound() {
-        return SoundEvents.CAT_DEATH;
+        return this.getSoundSet().deathSound().value();
     }
 }

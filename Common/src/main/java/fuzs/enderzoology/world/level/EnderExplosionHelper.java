@@ -39,8 +39,8 @@ public class EnderExplosionHelper {
     public static void onExplosionDetonate(ServerLevel serverLevel, ServerExplosion explosion, List<BlockPos> affectedBlocks, List<Entity> affectedEntities) {
         if (explosion.damageCalculator instanceof EnderExplosionDamageCalculator damageCalculator) {
             for (Entity entity : affectedEntities) {
-                if (entity instanceof LivingEntity livingEntity && entity.isAlive() && !entity.getType()
-                        .is(ModRegistry.CONCUSSION_IMMUNE_ENTITY_TYPE_TAG)) {
+                if (entity instanceof LivingEntity livingEntity && entity.isAlive()
+                        && !entity.is(ModRegistry.CONCUSSION_IMMUNE_ENTITY_TYPE_TAG)) {
                     Vec3 originalPosition = livingEntity.position();
                     if (damageCalculator.enderExplosionType.isTeleport()) {
                         EnderTeleportHelper.teleportEntity(serverLevel, livingEntity, 48, true);
@@ -117,7 +117,7 @@ public class EnderExplosionHelper {
                 explosion.getIndirectSourceEntity(),
                 enderExplosionType);
         int fuse = primedTnt.getFuse();
-        primedTnt.setFuse(serverLevel.random.nextInt(fuse / 4) + fuse / 8);
+        primedTnt.setFuse(serverLevel.getRandom().nextInt(fuse / 4) + fuse / 8);
         serverLevel.addFreshEntity(primedTnt);
     }
 

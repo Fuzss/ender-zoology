@@ -5,13 +5,21 @@ import fuzs.enderzoology.client.init.ModModelLayers;
 import fuzs.enderzoology.client.model.DireWolfModel;
 import fuzs.enderzoology.client.renderer.entity.layers.DireWolfHeldItemLayer;
 import fuzs.enderzoology.client.renderer.entity.state.DireWolfRenderState;
+import net.minecraft.client.model.BabyModelTransform;
+import net.minecraft.client.model.geom.builders.MeshTransformer;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.WolfRenderer;
 import net.minecraft.client.renderer.entity.state.WolfRenderState;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.animal.wolf.Wolf;
 
+import java.util.Set;
+
 public class DireWolfRenderer extends WolfRenderer {
+    /**
+     * Copied baby models from Minecraft 1.21.11.
+     */
+    public static final MeshTransformer BABY_TRANSFORMER = new BabyModelTransform(Set.of("head"));
     private static final Identifier TEXTURE_LOCATION = EnderZoology.id("textures/entity/wolf/dire_wolf.png");
 
     public DireWolfRenderer(EntityRendererProvider.Context context) {

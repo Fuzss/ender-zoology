@@ -3,7 +3,7 @@ package fuzs.enderzoology.world.entity.monster;
 import fuzs.enderzoology.init.ModEntityTypes;
 import fuzs.enderzoology.init.ModItems;
 import fuzs.enderzoology.world.entity.ai.goal.RangedBowEasyAttackGoal;
-import fuzs.puzzleslib.api.item.v2.EnchantingHelper;
+import fuzs.puzzleslib.common.api.item.v2.EnchantingHelper;
 import net.minecraft.core.Holder;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
@@ -244,7 +244,7 @@ public class FallenKnight extends AbstractSkeleton {
     }
 
     @Override
-    protected SoundEvent getStepSound() {
+    public SoundEvent getStepSound() {
         return SoundEvents.SKELETON_STEP;
     }
 

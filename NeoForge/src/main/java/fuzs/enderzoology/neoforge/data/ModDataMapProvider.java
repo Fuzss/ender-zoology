@@ -1,7 +1,7 @@
 package fuzs.enderzoology.neoforge.data;
 
 import fuzs.enderzoology.init.ModEntityTypes;
-import fuzs.puzzleslib.api.data.v2.core.DataProviderContext;
+import fuzs.puzzleslib.common.api.data.v2.core.DataProviderContext;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.PackOutput;

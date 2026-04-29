@@ -2,7 +2,7 @@ package fuzs.enderzoology.world.entity.monster;
 
 import fuzs.enderzoology.init.ModSoundEvents;
 import fuzs.enderzoology.world.entity.ai.goal.FollowPackLeaderGoal;
-import fuzs.puzzleslib.api.event.v1.data.MutableValue;
+import fuzs.puzzleslib.common.api.event.v1.data.MutableValue;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.server.level.ServerLevel;
@@ -141,7 +141,7 @@ public class DireWolf extends Wolf implements Enemy, PackMob {
     @Override
     public void tick() {
         super.tick();
-        if (this.hasFollowers() && this.level().random.nextInt(200) == 1) {
+        if (this.hasFollowers() && this.level().getRandom().nextInt(200) == 1) {
             List<? extends PackMob> list = this.level()
                     .getEntitiesOfClass(this.getClass(), this.getBoundingBox().inflate(8.0D, 8.0D, 8.0D));
             if (list.size() <= 1) {

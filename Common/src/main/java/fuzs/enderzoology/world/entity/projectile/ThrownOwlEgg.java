@@ -11,6 +11,7 @@ import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrowableIt
 import net.minecraft.world.entity.projectile.throwableitemprojectile.ThrownEgg;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.ItemStackTemplate;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.HitResult;
@@ -36,15 +37,20 @@ public class ThrownOwlEgg extends ThrowableItemProjectile {
     @Override
     public void handleEntityEvent(byte id) {
         if (id == EntityEvent.DEATH) {
-            for (int i = 0; i < 8; ++i) {
-                this.level()
-                        .addParticle(new ItemParticleOption(ParticleTypes.ITEM, this.getItem()),
-                                this.getX(),
-                                this.getY(),
-                                this.getZ(),
-                                ((double) this.random.nextFloat() - 0.5) * 0.08,
-                                ((double) this.random.nextFloat() - 0.5) * 0.08,
-                                ((double) this.random.nextFloat() - 0.5) * 0.08);
+            ItemStack item = this.getItem();
+            if (!item.isEmpty()) {
+                ItemParticleOption breakParticle = new ItemParticleOption(ParticleTypes.ITEM,
+                        ItemStackTemplate.fromNonEmptyStack(item));
+                for (int i = 0; i < 8; ++i) {
+                    this.level()
+                            .addParticle(breakParticle,
+                                    this.getX(),
+                                    this.getY(),
+                                    this.getZ(),
+                                    ((double) this.random.nextFloat() - 0.5) * 0.08,
+                                    ((double) this.random.nextFloat() - 0.5) * 0.08,
+                                    ((double) this.random.nextFloat() - 0.5) * 0.08);
+                }
             }
         }
     }

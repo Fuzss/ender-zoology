@@ -5,16 +5,16 @@ import fuzs.enderzoology.client.init.ModModelLayers;
 import fuzs.enderzoology.client.model.OwlModel;
 import fuzs.enderzoology.client.renderer.entity.*;
 import fuzs.enderzoology.init.ModEntityTypes;
-import fuzs.puzzleslib.api.client.core.v1.ClientModConstructor;
-import fuzs.puzzleslib.api.client.core.v1.context.EntityRenderersContext;
-import fuzs.puzzleslib.api.client.core.v1.context.EntitySpectatorShadersContext;
-import fuzs.puzzleslib.api.client.core.v1.context.LayerDefinitionsContext;
-import fuzs.puzzleslib.api.client.event.v1.entity.player.ComputeFovModifierCallback;
-import fuzs.puzzleslib.api.client.event.v1.renderer.RenderHandEvents;
+import fuzs.puzzleslib.common.api.client.core.v1.ClientModConstructor;
+import fuzs.puzzleslib.common.api.client.core.v1.context.EntityRenderersContext;
+import fuzs.puzzleslib.common.api.client.core.v1.context.EntitySpectatorShadersContext;
+import fuzs.puzzleslib.common.api.client.core.v1.context.LayerDefinitionsContext;
+import fuzs.puzzleslib.common.api.client.event.v1.entity.player.ComputeFovModifierCallback;
+import fuzs.puzzleslib.common.api.client.event.v1.renderer.RenderHandEvents;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.animal.equine.AbstractEquineModel;
-import net.minecraft.client.model.animal.feline.OcelotModel;
-import net.minecraft.client.model.animal.wolf.WolfModel;
+import net.minecraft.client.model.animal.feline.AdultOcelotModel;
+import net.minecraft.client.model.animal.wolf.AdultWolfModel;
 import net.minecraft.client.model.geom.LayerDefinitions;
 import net.minecraft.client.model.geom.builders.CubeDeformation;
 import net.minecraft.client.model.geom.builders.LayerDefinition;
@@ -105,19 +105,19 @@ public class EnderZoologyClient implements ClientModConstructor {
         context.registerLayerDefinition(ModModelLayers.FALLEN_MOUNT_ARMOR,
                 () -> LayerDefinition.create(AbstractEquineModel.createBodyMesh(new CubeDeformation(0.1F)), 64, 64));
         context.registerLayerDefinition(ModModelLayers.FALLEN_MOUNT_BABY,
-                () -> LayerDefinition.create(AbstractEquineModel.createBabyMesh(CubeDeformation.NONE), 64, 64));
+                () -> LayerDefinition.create(FallenMountRenderer.createBabyMesh(CubeDeformation.NONE), 64, 64));
         context.registerLayerDefinition(ModModelLayers.FALLEN_MOUNT_BABY_ARMOR,
-                () -> LayerDefinition.create(AbstractEquineModel.createBabyMesh(new CubeDeformation(0.1F)), 64, 64));
+                () -> LayerDefinition.create(FallenMountRenderer.createBabyMesh(new CubeDeformation(0.1F)), 64, 64));
         context.registerLayerDefinition(ModModelLayers.WITHER_CAT,
-                () -> LayerDefinition.create(OcelotModel.createBodyMesh(CubeDeformation.NONE), 64, 32));
+                () -> LayerDefinition.create(AdultOcelotModel.createBodyMesh(CubeDeformation.NONE), 64, 32));
         context.registerLayerDefinition(ModModelLayers.WITHER_WITCH, WitchModel::createBodyLayer);
         context.registerLayerDefinition(ModModelLayers.DIRE_WOLF,
-                () -> LayerDefinition.create(WolfModel.createMeshDefinition(CubeDeformation.NONE), 64, 32)
+                () -> LayerDefinition.create(AdultWolfModel.createBodyLayer(CubeDeformation.NONE), 64, 32)
                         .apply(MeshTransformer.scaling(1.2F)));
         context.registerLayerDefinition(ModModelLayers.DIRE_WOLF_BABY,
-                () -> LayerDefinition.create(WolfModel.createMeshDefinition(CubeDeformation.NONE), 64, 32)
+                () -> LayerDefinition.create(AdultWolfModel.createBodyLayer(CubeDeformation.NONE), 64, 32)
                         .apply(MeshTransformer.scaling(1.2F))
-                        .apply(WolfModel.BABY_TRANSFORMER));
+                        .apply(DireWolfRenderer.BABY_TRANSFORMER));
         context.registerLayerDefinition(ModModelLayers.CONCUSSION_CREEPER,
                 () -> CreeperModel.createBodyLayer(CubeDeformation.NONE));
         context.registerLayerDefinition(ModModelLayers.CONCUSSION_CREEPER_ARMOR,
