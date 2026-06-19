@@ -6,7 +6,7 @@ import fuzs.enderzoology.common.init.ModItems;
 import fuzs.puzzleslib.common.api.data.v2.AbstractLootProvider;
 import fuzs.puzzleslib.common.api.data.v2.core.DataProviderContext;
 import fuzs.puzzleslib.common.api.item.v2.EnchantingHelper;
-import net.minecraft.advancements.criterion.EntityPredicate;
+import net.minecraft.advancements.predicates.entity.EntityPredicate;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.tags.ItemTags;

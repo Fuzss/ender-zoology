@@ -75,8 +75,7 @@ public class DireWolf extends Wolf implements Enemy, PackMob {
                         8,
                         true,
                         false,
-                        (LivingEntity livingEntity, ServerLevel serverLevel) -> livingEntity.getType()
-                                == EntityType.WOLF));
+                        (LivingEntity livingEntity, ServerLevel serverLevel) -> livingEntity.is(EntityTypeIds.WOLF)));
         this.targetSelector.addGoal(4,
                 new NearestAttackableTargetGoal<>(this,
                         Mob.class,

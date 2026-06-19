@@ -18,7 +18,7 @@ import fuzs.puzzleslib.common.api.core.v1.context.BiomeModificationsContext;
 import fuzs.puzzleslib.common.api.core.v1.context.EntityAttributesContext;
 import fuzs.puzzleslib.common.api.core.v1.context.GameplayContentContext;
 import fuzs.puzzleslib.common.api.core.v1.context.SpawnPlacementsContext;
-import fuzs.puzzleslib.common.api.event.v1.entity.ServerEntityLevelEvents;
+import fuzs.puzzleslib.common.api.event.v1.entity.ServerEntityEvents;
 import fuzs.puzzleslib.common.api.event.v1.entity.living.LivingDropsCallback;
 import fuzs.puzzleslib.common.api.event.v1.entity.living.UseItemEvents;
 import fuzs.puzzleslib.common.api.event.v1.entity.player.PlayerCopyEvents;
@@ -30,7 +30,7 @@ import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.item.ItemStack;
@@ -62,7 +62,7 @@ public class EnderZoology implements ModConstructor {
     private static void registerEventHandlers() {
         ExplosionEvents.DETONATE.register(EnderExplosionHelper::onExplosionDetonate);
         UseItemEvents.TICK.register(HuntingBowHandler::onUseItemTick);
-        ServerEntityLevelEvents.LOAD.register(MobHuntingHandler::onEntityLoad);
+        ServerEntityEvents.LOAD.register(MobHuntingHandler::onEntityLoad);
         PlayerCopyEvents.COPY.register(SoulboundItems::onCopy);
         LivingDropsCallback.EVENT.register(SoulboundItems::onLivingDrops);
         RegisterPotionBrewingMixesCallback.EVENT.register(EnderZoology::registerBrewingRecipes);
@@ -207,20 +207,20 @@ public class EnderZoology implements ModConstructor {
         }, (BiomeModificationContext biomeModificationContext) -> {
             MobSpawnSettingsContext settings = biomeModificationContext.mobSpawnSettings();
             if (CONFIG.get(CommonConfig.class).concussionCreeper) {
-                SpawnerDataBuilder.create(settings, EntityType.CREEPER)
+                SpawnerDataBuilder.create(settings, EntityTypes.CREEPER)
                         .setWeight(Fraction.ONE_QUARTER)
                         .apply(ModEntityTypes.CONCUSSION_CREEPER_ENTITY_TYPE.value());
             }
 
             if (CONFIG.get(CommonConfig.class).infestedZombie) {
-                SpawnerDataBuilder.create(settings, EntityType.ZOMBIE)
+                SpawnerDataBuilder.create(settings, EntityTypes.ZOMBIE)
                         .setWeight(Fraction.ONE_QUARTER)
                         .setMinCount(1)
                         .apply(ModEntityTypes.INFESTED_ZOMBIE_ENTITY_TYPE.value());
             }
 
             if (CONFIG.get(CommonConfig.class).fallenKnight) {
-                SpawnerDataBuilder.create(settings, EntityType.ZOMBIE)
+                SpawnerDataBuilder.create(settings, EntityTypes.ZOMBIE)
                         .setWeight(Fraction.ONE_QUARTER)
                         .setMinCount(4)
                         .setMaxCount(6)
@@ -228,7 +228,7 @@ public class EnderZoology implements ModConstructor {
             }
 
             if (CONFIG.get(CommonConfig.class).enderminy) {
-                SpawnerDataBuilder.create(settings, EntityType.ENDERMAN)
+                SpawnerDataBuilder.create(settings, EntityTypes.ENDERMAN)
                         .setWeight(Fraction.getFraction(3, 1))
                         .setMinCount(Fraction.getFraction(4, 1))
                         .apply(ModEntityTypes.ENDERMINY_ENTITY_TYPE.value());
@@ -237,7 +237,7 @@ public class EnderZoology implements ModConstructor {
             if (CONFIG.get(CommonConfig.class).direWolf) {
                 if (biomeModificationContext.climateSettings().hasPrecipitation()
                         && biomeModificationContext.climateSettings().getTemperature() < 0.0F) {
-                    SpawnerDataBuilder.create(settings, EntityType.WOLF)
+                    SpawnerDataBuilder.create(settings, EntityTypes.WOLF)
                             .setWeight(Fraction.ONE_QUARTER)
                             .setMinCount(3)
                             .setMaxCount(8)
@@ -246,13 +246,13 @@ public class EnderZoology implements ModConstructor {
             }
 
             if (CONFIG.get(CommonConfig.class).witherWitch) {
-                SpawnerDataBuilder.create(settings, EntityType.WITCH)
+                SpawnerDataBuilder.create(settings, EntityTypes.WITCH)
                         .apply(ModEntityTypes.WITHER_WITCH_ENTITY_TYPE.value());
             }
 
             if (CONFIG.get(CommonConfig.class).owl) {
                 if (biomeModificationContext.climateSettings().hasPrecipitation()) {
-                    SpawnerDataBuilder.create(settings, EntityType.RABBIT)
+                    SpawnerDataBuilder.create(settings, EntityTypes.RABBIT)
                             .apply(ModEntityTypes.OWL_ENTITY_TYPE.value());
                 }
             }

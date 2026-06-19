@@ -7,7 +7,7 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.Mth;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntitySpawnReason;
-import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.fox.Fox;
 import net.minecraft.world.entity.monster.EnderMan;
@@ -51,7 +51,7 @@ public class EnderTeleportHelper {
                     entity.playSound(soundEvent, 1.0F, 1.0F);
                     if (endermiteChance && level.getRandom().nextFloat() < 0.05F && level.getGameRules()
                             .get(GameRules.SPAWN_MOBS)) {
-                        Endermite endermite = EntityType.ENDERMITE.create(level, EntitySpawnReason.TRIGGERED);
+                        Endermite endermite = EntityTypes.ENDERMITE.create(level, EntitySpawnReason.TRIGGERED);
                         if (endermite != null) {
                             endermite.snapTo(vec3.x, vec3.y, vec3.z, entity.getYRot(), entity.getXRot());
                             level.addFreshEntity(endermite);

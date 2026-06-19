@@ -285,7 +285,7 @@ public class FallenMount extends AbstractHorse implements Enemy {
                     valueInput -> {
                         Optional<AbstractHorse> optional = EntityType.create(valueInput,
                                 serverLevel,
-                                EntitySpawnReason.CONVERSION).map((Entity entity) -> {
+                                new EntitySpawnRequest(EntitySpawnReason.CONVERSION, false)).map((Entity entity) -> {
                             AbstractHorse abstractHorse = (AbstractHorse) entity;
                             abstractHorse.copyPosition(fallenMount);
                             fallenMount.discard();
@@ -296,7 +296,7 @@ public class FallenMount extends AbstractHorse implements Enemy {
                     });
         }
 
-        return mutableObject.getValue();
+        return mutableObject.get();
     }
 
     private Optional<AbstractHorse> createFreshHorse(ServerLevel serverLevel) {
@@ -327,9 +327,9 @@ public class FallenMount extends AbstractHorse implements Enemy {
     private EntityType<AbstractHorse> getRandomHorseType() {
         EntityType<? extends AbstractHorse> entityType;
         if (this.random.nextInt(6) == 0) {
-            entityType = EntityType.DONKEY;
+            entityType = EntityTypes.DONKEY;
         } else {
-            entityType = EntityType.HORSE;
+            entityType = EntityTypes.HORSE;
         }
         return (EntityType<AbstractHorse>) entityType;
     }

@@ -21,7 +21,6 @@ import net.minecraft.world.entity.ai.navigation.FlyingPathNavigation;
 import net.minecraft.world.entity.ai.navigation.PathNavigation;
 import net.minecraft.world.entity.ai.util.LandRandomPos;
 import net.minecraft.world.entity.animal.Animal;
-import net.minecraft.world.entity.animal.FlyingAnimal;
 import net.minecraft.world.entity.animal.rabbit.Rabbit;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
@@ -38,7 +37,7 @@ import net.minecraft.world.level.storage.ValueOutput;
 import net.minecraft.world.phys.Vec3;
 import org.jspecify.annotations.Nullable;
 
-public class Owl extends Animal implements FlyingAnimal {
+public class Owl extends Animal {
     private static final Ingredient FOOD_ITEMS = Ingredient.of(Items.RABBIT, Items.COD, Items.SALMON);
 
     private int eggTime;
@@ -196,9 +195,13 @@ public class Owl extends Animal implements FlyingAnimal {
         return ModEntityTypes.OWL_ENTITY_TYPE.value().create(level, EntitySpawnReason.BREEDING);
     }
 
-    @Override
     public boolean isFlying() {
         return !this.onGround();
+    }
+
+    @Override
+    protected boolean omnidirectionalAirMover() {
+        return true;
     }
 
     @Override

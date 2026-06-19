@@ -8,17 +8,15 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 
-public class ModBlockTagProvider extends AbstractTagProvider<Block> {
+public class ModBlockTagsProvider extends AbstractTagProvider<Block> {
 
-    public ModBlockTagProvider(DataProviderContext context) {
+    public ModBlockTagsProvider(DataProviderContext context) {
         super(Registries.BLOCK, context);
     }
 
     @Override
     public void addTags(HolderLookup.Provider provider) {
         this.tag(BlockTags.ENDERMAN_HOLDABLE)
-                .add(ModBlocks.ENDER_CHARGE_BLOCK.value(),
-                        ModBlocks.CONFUSING_CHARGE_BLOCK.value(),
-                        ModBlocks.CONCUSSION_CHARGE_BLOCK.value());
+                .add(ModBlocks.ENDER_CHARGE_BLOCK, ModBlocks.CONFUSING_CHARGE_BLOCK, ModBlocks.CONCUSSION_CHARGE_BLOCK);
     }
 }

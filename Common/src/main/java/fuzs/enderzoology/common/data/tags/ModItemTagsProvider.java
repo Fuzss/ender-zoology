@@ -8,9 +8,9 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Item;
 
-public class ModItemTagProvider extends AbstractTagProvider<Item> {
+public class ModItemTagsProvider extends AbstractTagProvider<Item> {
 
-    public ModItemTagProvider(DataProviderContext context) {
+    public ModItemTagsProvider(DataProviderContext context) {
         super(Registries.ITEM, context);
     }
 

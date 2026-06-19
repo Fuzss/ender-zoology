@@ -4,10 +4,10 @@ import fuzs.enderzoology.common.EnderZoology;
 import fuzs.enderzoology.common.data.ModRecipeProvider;
 import fuzs.enderzoology.common.data.loot.ModBlockLootProvider;
 import fuzs.enderzoology.common.data.loot.ModEntityTypeLootProvider;
-import fuzs.enderzoology.common.data.tags.ModBlockTagProvider;
-import fuzs.enderzoology.common.data.tags.ModEnchantmentTagProvider;
-import fuzs.enderzoology.common.data.tags.ModEntityTypeTagProvider;
-import fuzs.enderzoology.common.data.tags.ModItemTagProvider;
+import fuzs.enderzoology.common.data.tags.ModBlockTagsProvider;
+import fuzs.enderzoology.common.data.tags.ModEnchantmentTagsProvider;
+import fuzs.enderzoology.common.data.tags.ModEntityTypeTagsProvider;
+import fuzs.enderzoology.common.data.tags.ModItemTagsProvider;
 import fuzs.enderzoology.common.init.ModRegistry;
 import fuzs.enderzoology.neoforge.data.ModDataMapProvider;
 import fuzs.enderzoology.neoforge.init.NeoForgeModRegistry;
@@ -24,11 +24,11 @@ public class EnderZoologyNeoForge {
         DataProviderHelper.registerDataProviders(EnderZoology.MOD_ID,
                 ModRegistry.REGISTRY_SET_BUILDER,
                 ModBlockLootProvider::new,
-                ModBlockTagProvider::new,
-                ModItemTagProvider::new,
-                ModEnchantmentTagProvider::new,
+                ModBlockTagsProvider::new,
+                ModItemTagsProvider::new,
+                ModEnchantmentTagsProvider::new,
                 ModEntityTypeLootProvider::new,
-                ModEntityTypeTagProvider::new,
+                ModEntityTypeTagsProvider::new,
                 ModRecipeProvider::new,
                 ModDataMapProvider::new);
     }

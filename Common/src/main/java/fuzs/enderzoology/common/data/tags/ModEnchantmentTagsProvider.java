@@ -8,18 +8,18 @@ import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.EnchantmentTags;
 import net.minecraft.world.item.enchantment.Enchantment;
 
-public class ModEnchantmentTagProvider extends AbstractTagProvider<Enchantment> {
+public class ModEnchantmentTagsProvider extends AbstractTagProvider<Enchantment> {
 
-    public ModEnchantmentTagProvider(DataProviderContext context) {
+    public ModEnchantmentTagsProvider(DataProviderContext context) {
         super(Registries.ENCHANTMENT, context);
     }
 
     @Override
     public void addTags(HolderLookup.Provider provider) {
         this.tag(EnchantmentTags.NON_TREASURE)
-                .addKey(ModEnchantments.DECAY_ENCHANTMENT,
+                .add(ModEnchantments.DECAY_ENCHANTMENT,
                         ModEnchantments.SOULBOUND_ENCHANTMENT,
                         ModEnchantments.WITHERING_ENCHANTMENT);
-        this.tag(EnchantmentTags.TREASURE).addKey(ModEnchantments.REPELLENT_ENCHANTMENT);
+        this.tag(EnchantmentTags.TREASURE).add(ModEnchantments.REPELLENT_ENCHANTMENT);
     }
 }

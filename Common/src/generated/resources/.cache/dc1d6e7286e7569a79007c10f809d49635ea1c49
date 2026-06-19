@@ -1,4 +1,4 @@
-// 26.1.2	2026-04-30T00:53:34.34088	Block Loot Tables
-28ba99981fe098dda86f557dc19449471047f9df data/enderzoology/loot_table/blocks/concussion_charge.json
-9dbafde716a5cad3b53525c464fff25057b6be53 data/enderzoology/loot_table/blocks/confusing_charge.json
-9ba7f906472e6a6dd334e922ab48a4e93f0dc09f data/enderzoology/loot_table/blocks/ender_charge.json
+// 26.2	2026-06-19T09:51:52.713743	Block Loot Tables
+8acc78a1acf0fa2aed2352be34b352d97d537b35 data/enderzoology/loot_table/blocks/concussion_charge.json
+4d3087c537af40895d4bb4500caa94c83da0615c data/enderzoology/loot_table/blocks/confusing_charge.json
+a38b8513bb2ec12ec935403c084e52cdeeec871d data/enderzoology/loot_table/blocks/ender_charge.json
