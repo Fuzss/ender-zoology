@@ -6,11 +6,17 @@
     "26.1.x": "maintained",
     "26.2.x": "primary"
   },
-  "properties": {
-    "distributions.curseforge.id": "857968",
-    "distributions.curseforge.slug": "ender-zoology",
-    "distributions.github.slug": "ender-zoology",
-    "distributions.modrinth.id": "CUQhzQjg",
-    "distributions.modrinth.slug": "ender-zoology"
+  "distributions": {
+    "curseforge": {
+      "id": "857968",
+      "slug": "ender-zoology"
+    },
+    "github": {
+      "slug": "ender-zoology"
+    },
+    "modrinth": {
+      "id": "CUQhzQjg",
+      "slug": "ender-zoology"
+    }
   }
 }
