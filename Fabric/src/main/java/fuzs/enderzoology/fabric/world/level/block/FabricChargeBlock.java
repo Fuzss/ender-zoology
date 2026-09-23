@@ -13,6 +13,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.Projectile;
+import net.minecraft.world.entity.projectile.arrow.AbstractArrow;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -32,58 +33,58 @@ import org.jspecify.annotations.Nullable;
  * customising explosion behaviour.
  */
 public class FabricChargeBlock extends TntBlock {
-    private final EnderExplosionType enderExplosionType;
+    private final EnderExplosionType type;
 
-    public FabricChargeBlock(EnderExplosionType enderExplosionType, Properties properties) {
+    public FabricChargeBlock(EnderExplosionType type, Properties properties) {
         super(properties);
-        this.enderExplosionType = enderExplosionType;
+        this.type = type;
     }
 
-    public boolean onCaughtFire(BlockState state, Level level, BlockPos pos, @Nullable Direction face, @Nullable LivingEntity igniter) {
-        return EnderExplosionHelper.onChargeCaughtFire(level, pos, igniter, this.enderExplosionType);
-    }
-
-    @Override
-    public void wasExploded(ServerLevel serverLevel, BlockPos pos, Explosion explosion) {
-        EnderExplosionHelper.chargeWasExploded(serverLevel, pos, explosion, this.enderExplosionType);
+    public boolean onCaughtFire(BlockState state, Level level, BlockPos pos, @Nullable Direction direction, @Nullable LivingEntity source, ItemStack itemStack) {
+        return EnderExplosionHelper.primeCharge(level, pos, source, itemStack, this.type);
     }
 
     @Override
-    public void onPlace(BlockState pState, Level level, BlockPos blockPos, BlockState oldState, boolean movedByPiston) {
-        if (!oldState.is(pState.getBlock())) {
-            if (level.hasNeighborSignal(blockPos) && this.onCaughtFire(pState, level, blockPos, null, null)) {
-                level.removeBlock(blockPos, false);
+    public void wasExploded(ServerLevel level, BlockPos pos, Explosion explosion) {
+        EnderExplosionHelper.chargeWasExploded(level, pos, explosion, this.type);
+    }
+
+    @Override
+    public void onPlace(BlockState state, Level level, BlockPos pos, BlockState oldState, boolean movedByPiston) {
+        if (!oldState.is(state.getBlock())) {
+            if (level.hasNeighborSignal(pos) && this.onCaughtFire(state, level, pos, null, null, ItemStack.EMPTY)) {
+                level.removeBlock(pos, false);
             }
         }
     }
 
     @Override
-    protected void neighborChanged(BlockState blockState, Level level, BlockPos blockPos, Block neighborBlock, @Nullable Orientation orientation, boolean movedByPiston) {
-        if (level.hasNeighborSignal(blockPos) && this.onCaughtFire(blockState, level, blockPos, null, null)) {
-            level.removeBlock(blockPos, false);
+    protected void neighborChanged(BlockState state, Level level, BlockPos pos, Block neighborBlock, @Nullable Orientation orientation, boolean movedByPiston) {
+        if (level.hasNeighborSignal(pos) && this.onCaughtFire(state, level, pos, null, null, ItemStack.EMPTY)) {
+            level.removeBlock(pos, false);
         }
     }
 
     @Override
-    public BlockState playerWillDestroy(Level level, BlockPos blockPos, BlockState blockState, Player player) {
-        if (!level.isClientSide() && !player.isCreative() && blockState.getValue(UNSTABLE)) {
-            this.onCaughtFire(blockState, level, blockPos, null, null);
+    public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
+        if (!level.isClientSide() && !player.isCreative() && state.getValue(UNSTABLE)) {
+            this.onCaughtFire(state, level, pos, null, null, ItemStack.EMPTY);
         }
 
-        return super.playerWillDestroy(level, blockPos, blockState, player);
+        return super.playerWillDestroy(level, pos, state, player);
     }
 
     @Override
-    protected InteractionResult useItemOn(ItemStack itemStack, BlockState blockState, Level level, BlockPos blockPos, Player player, InteractionHand interactionHand, BlockHitResult hitResult) {
+    protected InteractionResult useItemOn(ItemStack itemStack, BlockState state, Level level, BlockPos pos, Player player, InteractionHand hand, BlockHitResult hitResult) {
         if (!itemStack.is(Items.FLINT_AND_STEEL) && !itemStack.is(Items.FIRE_CHARGE)) {
-            return super.useItemOn(itemStack, blockState, level, blockPos, player, interactionHand, hitResult);
+            return super.useItemOn(itemStack, state, level, pos, player, hand, hitResult);
         } else {
-            if (this.onCaughtFire(blockState, level, blockPos, hitResult.getDirection(), player)) {
-                level.setBlock(blockPos, Blocks.AIR.defaultBlockState(), 11);
+            if (this.onCaughtFire(state, level, pos, hitResult.getDirection(), player, itemStack)) {
+                level.setBlock(pos, Blocks.AIR.defaultBlockState(), 11);
                 Item item = itemStack.getItem();
                 if (!player.isCreative()) {
                     if (itemStack.is(Items.FLINT_AND_STEEL)) {
-                        itemStack.hurtAndBreak(1, player, interactionHand.asEquipmentSlot());
+                        itemStack.hurtAndBreak(1, player, hand.asEquipmentSlot());
                     } else {
                         itemStack.consume(1, player);
                     }
@@ -102,16 +103,17 @@ public class FabricChargeBlock extends TntBlock {
     }
 
     @Override
-    public void onProjectileHit(Level level, BlockState blockState, BlockHitResult hitResult, Projectile projectile) {
+    public void onProjectileHit(Level level, BlockState state, BlockHitResult hitResult, Projectile projectile) {
         if (level instanceof ServerLevel serverLevel) {
-            BlockPos blockPos = hitResult.getBlockPos();
-            Entity entity = projectile.getOwner();
-            if (projectile.isOnFire() && projectile.mayInteract(serverLevel, blockPos) && this.onCaughtFire(blockState,
-                    level,
-                    blockPos,
+            BlockPos pos = hitResult.getBlockPos();
+            Entity owner = projectile.getOwner();
+            if (projectile.isOnFire() && projectile.mayInteract(serverLevel, pos) && this.onCaughtFire(state,
+                    serverLevel,
+                    pos,
                     null,
-                    entity instanceof LivingEntity ? (LivingEntity) entity : null)) {
-                level.removeBlock(blockPos, false);
+                    owner instanceof LivingEntity livingEntity ? livingEntity : null,
+                    projectile instanceof AbstractArrow arr ? arr.getPickupItemStackOrigin() : ItemStack.EMPTY)) {
+                serverLevel.removeBlock(pos, false);
             }
         }
     }

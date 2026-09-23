@@ -38,11 +38,11 @@ public class DireWolfHeldItemLayer extends RenderLayer<WolfRenderState, WolfMode
                 poseStack.scale(0.75F, 0.75F, 0.75F);
             }
 
-            poseStack.mulPose(Axis.ZP.rotation(renderState.headRollAngle));
-            poseStack.mulPose(Axis.YP.rotationDegrees(yRot));
-            poseStack.mulPose(Axis.XP.rotationDegrees(xRot));
+            poseStack.rotate(Axis.ZP.rotation(renderState.headRollAngle));
+            poseStack.rotate(Axis.YP.rotationDegrees(yRot));
+            poseStack.rotate(Axis.XP.rotationDegrees(xRot));
             poseStack.translate(0.05, 0.1, -0.4);
-            poseStack.mulPose(Axis.XP.rotationDegrees(90.0F));
+            poseStack.rotate(Axis.XP.rotationDegrees(90.0F));
             itemStackRenderState.submit(poseStack,
                     nodeCollector,
                     packedLight,

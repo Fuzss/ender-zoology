@@ -14,12 +14,14 @@ public class ModEntityTypes {
     public static final Holder.Reference<EntityType<ThrownOwlEgg>> OWL_EGG_ENTITY_TYPE = ModRegistry.REGISTRIES.registerEntityType(
             "owl_egg",
             () -> EntityType.Builder.<ThrownOwlEgg>of(ThrownOwlEgg::new, MobCategory.MISC)
+                    .noLootTable()
                     .sized(0.25F, 0.25F)
                     .clientTrackingRange(4)
                     .updateInterval(10));
     public static final Holder.Reference<EntityType<PrimedCharge>> PRIMED_CHARGE_ENTITY_TYPE = ModRegistry.REGISTRIES.registerEntityType(
             "primed_charge",
             () -> EntityType.Builder.<PrimedCharge>of(PrimedCharge::new, MobCategory.MISC)
+                    .noLootTable()
                     .fireImmune()
                     .sized(0.98F, 0.98F)
                     .eyeHeight(0.15F)
@@ -95,18 +97,21 @@ public class ModEntityTypes {
     public static final Holder.Reference<EntityType<MinecartCharge>> ENDER_CHARGE_MINECART_ENTITY_TYPE = ModRegistry.REGISTRIES.registerEntityType(
             "ender_charge_minecart",
             () -> EntityType.Builder.of(EnderExplosionType.ENDER.getMinecartFactory(), MobCategory.MISC)
+                    .noLootTable()
                     .sized(0.98F, 0.7F)
                     .passengerAttachments(0.1875F)
                     .clientTrackingRange(8));
     public static final Holder.Reference<EntityType<MinecartCharge>> CONFUSING_CHARGE_MINECART_ENTITY_TYPE = ModRegistry.REGISTRIES.registerEntityType(
             "confusing_charge_minecart",
             () -> EntityType.Builder.of(EnderExplosionType.CONFUSION.getMinecartFactory(), MobCategory.MISC)
+                    .noLootTable()
                     .sized(0.98F, 0.7F)
                     .passengerAttachments(0.1875F)
                     .clientTrackingRange(8));
     public static final Holder.Reference<EntityType<MinecartCharge>> CONCUSSION_CHARGE_MINECART_ENTITY_TYPE = ModRegistry.REGISTRIES.registerEntityType(
             "concussion_charge_minecart",
             () -> EntityType.Builder.of(EnderExplosionType.CONCUSSION.getMinecartFactory(), MobCategory.MISC)
+                    .noLootTable()
                     .sized(0.98F, 0.7F)
                     .passengerAttachments(0.1875F)
                     .clientTrackingRange(8));

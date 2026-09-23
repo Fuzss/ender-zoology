@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderzoology:concussion_charge"
+        "recipes": "enderzoology:concussion_charge"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

@@ -2,13 +2,13 @@ package fuzs.enderzoology.common.world.entity.monster;
 
 import fuzs.enderzoology.common.EnderZoology;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Direction;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.resources.Identifier;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.DamageTypeTags;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.util.TimeUtil;
@@ -41,7 +41,7 @@ import org.jspecify.annotations.Nullable;
 import java.util.List;
 
 /**
- * @see net.minecraft.world.entity.monster.EnderMan
+ * @see net.minecraft.world.entity.monster.Enderman
  */
 public class Enderminy extends Monster implements NeutralMob {
     private static final Identifier SPEED_MODIFIER_ATTACKING_ID = EnderZoology.id("attacking_speed_boost");
@@ -237,39 +237,39 @@ public class Enderminy extends Monster implements NeutralMob {
     }
 
     private boolean teleport(double x, double y, double z) {
-        BlockPos.MutableBlockPos mutableBlockPos = new BlockPos.MutableBlockPos(x, y, z);
-        while (mutableBlockPos.getY() > this.level().getMinY() && !this.level()
-                .getBlockState(mutableBlockPos)
-                .blocksMotion()) {
-            mutableBlockPos.move(Direction.DOWN);
-        }
-
-        BlockState blockState = this.level().getBlockState(mutableBlockPos);
-        boolean bl = blockState.blocksMotion();
-        boolean bl2 = blockState.getFluidState().is(FluidTags.WATER);
-        if (bl && !bl2) {
-            Vec3 vec3 = this.position();
-            boolean bl3 = this.randomTeleport(x, y, z, true);
-            if (bl3) {
-                this.level().gameEvent(GameEvent.TELEPORT, vec3, GameEvent.Context.of(this));
-                if (!this.isSilent()) {
-                    this.level()
-                            .playSound(null,
-                                    this.xo,
-                                    this.yo,
-                                    this.zo,
-                                    SoundEvents.ENDERMAN_TELEPORT,
-                                    this.getSoundSource(),
-                                    1.0F,
-                                    1.0F);
-                    this.playSound(SoundEvents.ENDERMAN_TELEPORT, 1.0F, 1.0F);
-                }
-            }
-
-            return bl3;
-        } else {
+        if (this.isPassenger()) {
             return false;
         }
+
+        Vec3 vec3 = this.position();
+        boolean bl = this.randomTeleport(x, y, z, true, BlockTags.ENDERMAN_DOES_NOT_TELEPORT_TO);
+        if (bl) {
+            this.level().gameEvent(GameEvent.TELEPORT, vec3, GameEvent.Context.of(this));
+            if (!this.isSilent()) {
+                this.level()
+                        .playSound(null,
+                                this.xo,
+                                this.yo,
+                                this.zo,
+                                SoundEvents.ENDERMAN_TELEPORT,
+                                this.getSoundSource(),
+                                1.0F,
+                                1.0F);
+                this.playSound(SoundEvents.ENDERMAN_TELEPORT, 1.0F, 1.0F);
+            }
+        }
+
+        return bl;
+    }
+
+    /**
+     * @see net.minecraft.world.entity.monster.Enderman#canRandomlyTeleportTo(double, double, double)
+     */
+    @Override
+    public boolean canRandomlyTeleportTo(double x, double y, double z) {
+        BlockPos blockPos = BlockPos.containing(x, y, z).below();
+        BlockState blockState = this.level().getBlockState(blockPos);
+        return !blockState.getFluidState().is(FluidTags.WATER);
     }
 
     @Override
@@ -288,7 +288,7 @@ public class Enderminy extends Monster implements NeutralMob {
     }
 
     /**
-     * @see net.minecraft.world.entity.monster.EnderMan#hurtServer(ServerLevel, DamageSource, float)
+     * @see net.minecraft.world.entity.monster.Enderman#hurtServer(ServerLevel, DamageSource, float)
      */
     @Override
     public boolean hurtServer(ServerLevel level, DamageSource damageSource, float amount) {
@@ -323,7 +323,7 @@ public class Enderminy extends Monster implements NeutralMob {
     }
 
     /**
-     * @see net.minecraft.world.entity.monster.EnderMan#hurtWithCleanWater(ServerLevel, DamageSource,
+     * @see net.minecraft.world.entity.monster.Enderman#hurtWithCleanWater(ServerLevel, DamageSource,
      *         AbstractThrownPotion, float)
      */
     private boolean hurtWithCleanWater(ServerLevel serverLevel, DamageSource damageSource, AbstractThrownPotion abstractThrownPotion, float f) {

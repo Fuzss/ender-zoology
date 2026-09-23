@@ -1,16 +1,16 @@
 package fuzs.enderzoology.common.data.tags;
 
 import fuzs.enderzoology.common.init.ModEntityTypes;
-import fuzs.enderzoology.common.init.ModRegistry;
-import fuzs.puzzleslib.common.api.data.v2.core.DataProviderContext;
-import fuzs.puzzleslib.common.api.data.v2.tags.AbstractTagProvider;
+import fuzs.enderzoology.common.init.ModTags;
+import fuzs.puzzleslib.common.api.data.v3.core.DataProviderContext;
+import fuzs.puzzleslib.common.api.data.v3.tags.AbstractTagsProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.tags.EntityTypeTags;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.EntityTypeIds;
 
-public class ModEntityTypeTagsProvider extends AbstractTagProvider<EntityType<?>> {
+public class ModEntityTypeTagsProvider extends AbstractTagsProvider<EntityType<?>> {
 
     public ModEntityTypeTagsProvider(DataProviderContext context) {
         super(Registries.ENTITY_TYPE, context);
@@ -19,9 +19,9 @@ public class ModEntityTypeTagsProvider extends AbstractTagProvider<EntityType<?>
     @Override
     public void addTags(HolderLookup.Provider provider) {
         this.tag(EntityTypeTags.IMPACT_PROJECTILES).add(ModEntityTypes.OWL_EGG_ENTITY_TYPE);
-        this.tag(ModRegistry.FALLEN_MOUNT_TARGETS_ENTITY_TYPE_TAG)
+        this.tag(ModTags.Entities.FALLEN_MOUNT_TARGETS_ENTITY_TYPE_TAG)
                 .add(EntityTypeIds.HORSE, EntityTypeIds.DONKEY, EntityTypeIds.MULE);
-        this.tag(ModRegistry.CONCUSSION_IMMUNE_ENTITY_TYPE_TAG)
+        this.tag(ModTags.Entities.CONCUSSION_IMMUNE_ENTITY_TYPE_TAG)
                 .add(EntityTypeIds.ENDERMAN, EntityTypeIds.ENDERMITE, EntityTypeIds.SHULKER)
                 .add(ModEntityTypes.CONCUSSION_CREEPER_ENTITY_TYPE,
                         ModEntityTypes.ENDERMINY_ENTITY_TYPE,

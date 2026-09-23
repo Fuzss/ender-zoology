@@ -1,6 +1,6 @@
 package fuzs.enderzoology.common.world.level;
 
-import fuzs.enderzoology.common.init.ModRegistry;
+import fuzs.enderzoology.common.init.ModTags;
 import fuzs.enderzoology.common.world.entity.item.PrimedCharge;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
@@ -13,10 +13,10 @@ import net.minecraft.world.entity.AreaEffectCloud;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.item.PrimedTnt;
-import net.minecraft.world.level.EntityBasedExplosionDamageCalculator;
-import net.minecraft.world.level.Explosion;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.ServerExplosion;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.*;
+import net.minecraft.world.level.block.state.pattern.BlockInWorld;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.phys.Vec3;
@@ -27,11 +27,11 @@ import java.util.Objects;
 
 public class EnderExplosionHelper {
 
-    public static void explode(ServerLevel serverLevel, Entity exploder, @Nullable DamageSource damageSource, double x, double y, double z, float radius, Level.ExplosionInteraction explosionInteraction, EnderExplosionType enderExplosionType, boolean spawnLingeringCloud) {
+    public static void explode(ServerLevel serverLevel, Entity exploder, @Nullable DamageSource damageSource, double x, double y, double z, float radius, Level.ExplosionInteraction explosionInteraction, EnderExplosionType type, boolean spawnLingeringCloud) {
         Objects.requireNonNull(exploder, "exploder is null");
         // we use the damage calculator for holding custom explosion data to avoid having to implement our own explosion
-        EnderExplosionDamageCalculator damageCalculator = new EnderExplosionDamageCalculator(exploder,
-                enderExplosionType,
+        EnderExplosionDamageCalculator damageCalculator = new EnderExplosionDamageCalculator(type,
+                exploder,
                 spawnLingeringCloud);
         serverLevel.explode(exploder, damageSource, damageCalculator, x, y, z, radius, false, explosionInteraction);
     }
@@ -40,12 +40,12 @@ public class EnderExplosionHelper {
         if (explosion.damageCalculator instanceof EnderExplosionDamageCalculator damageCalculator) {
             for (Entity entity : affectedEntities) {
                 if (entity instanceof LivingEntity livingEntity && entity.isAlive()
-                        && !entity.is(ModRegistry.CONCUSSION_IMMUNE_ENTITY_TYPE_TAG)) {
+                        && !entity.is(ModTags.Entities.CONCUSSION_IMMUNE_ENTITY_TYPE_TAG)) {
                     Vec3 originalPosition = livingEntity.position();
-                    if (damageCalculator.enderExplosionType.isTeleport()) {
+                    if (damageCalculator.type.isTeleport()) {
                         EnderTeleportHelper.teleportEntity(serverLevel, livingEntity, 48, true);
                     }
-                    if (damageCalculator.enderExplosionType.isConfusion()) {
+                    if (damageCalculator.type.isConfusion()) {
                         applyConfusionPotion(explosion.center(), originalPosition, livingEntity, explosion.radius());
                     }
                 }
@@ -55,10 +55,10 @@ public class EnderExplosionHelper {
             affectedBlocks.removeIf((BlockPos blockPos) -> serverLevel.getBlockState(blockPos)
                     .getBlock()
                     .dropFromExplosion(explosion));
-            if (damageCalculator.spawnLingeringCloud) {
+            if (damageCalculator.lingeringCloud) {
                 spawnLingeringCloud(serverLevel,
                         explosion.center(),
-                        damageCalculator.enderExplosionType.createEffects((int) explosion.radius()));
+                        damageCalculator.type.createEffects((int) explosion.radius()));
             }
         }
     }
@@ -85,14 +85,17 @@ public class EnderExplosionHelper {
         level.addFreshEntity(areaEffectCloud);
     }
 
-    public static boolean onChargeCaughtFire(Level level, BlockPos blockPos, @Nullable LivingEntity igniter, EnderExplosionType enderExplosionType) {
-        if (level instanceof ServerLevel serverLevel && serverLevel.getGameRules().get(GameRules.TNT_EXPLODES)) {
-            PrimedTnt primedTnt = new PrimedCharge(level,
-                    blockPos.getX() + 0.5,
-                    blockPos.getY(),
-                    blockPos.getZ() + 0.5,
-                    igniter,
-                    enderExplosionType);
+    /**
+     * @see net.minecraft.world.level.block.TntBlock#prime(Level, BlockPos, LivingEntity, ItemStack)
+     */
+    public static boolean primeCharge(Level level, BlockPos pos, @Nullable LivingEntity source, ItemStack itemStack, EnderExplosionType type) {
+        if (!(level instanceof ServerLevel serverLevel && serverLevel.getGameRules().get(GameRules.TNT_EXPLODES))) {
+            return false;
+        } else if (source instanceof Player player && player.gameMode() == GameType.ADVENTURE
+                && !itemStack.canBreakBlockInAdventureMode(new BlockInWorld(level, pos, false))) {
+            return false;
+        } else {
+            PrimedTnt primedTnt = new PrimedCharge(level, pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, source, type);
             level.addFreshEntity(primedTnt);
             level.playSound(null,
                     primedTnt.getX(),
@@ -102,33 +105,34 @@ public class EnderExplosionHelper {
                     SoundSource.BLOCKS,
                     1.0F,
                     1.0F);
-            level.gameEvent(igniter, GameEvent.PRIME_FUSE, blockPos);
+            level.gameEvent(source, GameEvent.PRIME_FUSE, pos);
             return true;
-        } else {
-            return false;
         }
     }
 
-    public static void chargeWasExploded(ServerLevel serverLevel, BlockPos blockPos, Explosion explosion, EnderExplosionType enderExplosionType) {
-        PrimedTnt primedTnt = new PrimedCharge(serverLevel,
-                blockPos.getX() + 0.5,
-                blockPos.getY(),
-                blockPos.getZ() + 0.5,
+    /**
+     * @see net.minecraft.world.level.block.TntBlock#wasExploded(ServerLevel, BlockPos, Explosion)
+     */
+    public static void chargeWasExploded(ServerLevel level, BlockPos pos, Explosion explosion, EnderExplosionType type) {
+        PrimedTnt primedTnt = new PrimedCharge(level,
+                pos.getX() + 0.5,
+                pos.getY(),
+                pos.getZ() + 0.5,
                 explosion.getIndirectSourceEntity(),
-                enderExplosionType);
+                type);
         int fuse = primedTnt.getFuse();
-        primedTnt.setFuse(serverLevel.getRandom().nextInt(fuse / 4) + fuse / 8);
-        serverLevel.addFreshEntity(primedTnt);
+        primedTnt.setFuse(level.getRandom().nextInt(fuse / 4) + fuse / 8);
+        level.addFreshEntity(primedTnt);
     }
 
     public static class EnderExplosionDamageCalculator extends EntityBasedExplosionDamageCalculator {
-        public final EnderExplosionType enderExplosionType;
-        public final boolean spawnLingeringCloud;
+        public final EnderExplosionType type;
+        public final boolean lingeringCloud;
 
-        public EnderExplosionDamageCalculator(Entity source, EnderExplosionType enderExplosionType, boolean spawnLingeringCloud) {
+        public EnderExplosionDamageCalculator(EnderExplosionType type, Entity source, boolean lingeringCloud) {
             super(source);
-            this.enderExplosionType = enderExplosionType;
-            this.spawnLingeringCloud = spawnLingeringCloud;
+            this.type = type;
+            this.lingeringCloud = lingeringCloud;
         }
     }
 }

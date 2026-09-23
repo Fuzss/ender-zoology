@@ -11,10 +11,13 @@ import fuzs.enderzoology.common.world.entity.item.PrimedCharge;
 import fuzs.enderzoology.common.world.entity.monster.DireWolf;
 import fuzs.enderzoology.common.world.level.EnderExplosionHelper;
 import fuzs.enderzoology.common.world.level.EnderExplosionType;
-import fuzs.puzzleslib.common.api.biome.v1.*;
+import fuzs.puzzleslib.common.api.biome.v2.BiomeLoadingPhase;
+import fuzs.puzzleslib.common.api.biome.v2.BiomeTransformer;
+import fuzs.puzzleslib.common.api.biome.v2.SpawnerDataBuilder;
+import fuzs.puzzleslib.common.api.biome.v2.context.MobSpawnsContext;
 import fuzs.puzzleslib.common.api.config.v3.ConfigHolder;
 import fuzs.puzzleslib.common.api.core.v1.ModConstructor;
-import fuzs.puzzleslib.common.api.core.v1.context.BiomeModificationsContext;
+import fuzs.puzzleslib.common.api.core.v1.context.BiomeTransformationsContext;
 import fuzs.puzzleslib.common.api.core.v1.context.EntityAttributesContext;
 import fuzs.puzzleslib.common.api.core.v1.context.GameplayContentContext;
 import fuzs.puzzleslib.common.api.core.v1.context.SpawnPlacementsContext;
@@ -23,23 +26,23 @@ import fuzs.puzzleslib.common.api.event.v1.entity.living.LivingDropsCallback;
 import fuzs.puzzleslib.common.api.event.v1.entity.living.UseItemEvents;
 import fuzs.puzzleslib.common.api.event.v1.entity.player.PlayerCopyEvents;
 import fuzs.puzzleslib.common.api.event.v1.level.ExplosionEvents;
-import fuzs.puzzleslib.common.api.event.v1.server.RegisterPotionBrewingMixesCallback;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
+import net.minecraft.core.HolderGetter;
 import net.minecraft.core.dispenser.BlockSource;
 import net.minecraft.core.dispenser.DefaultDispenseItemBehavior;
 import net.minecraft.resources.Identifier;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BiomeTags;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.SpawnPlacementTypes;
 import net.minecraft.world.entity.item.PrimedTnt;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
-import net.minecraft.world.item.alchemy.Potions;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DispenserBlock;
-import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.levelgen.Heightmap;
 import org.apache.commons.lang3.math.Fraction;
@@ -65,7 +68,6 @@ public class EnderZoology implements ModConstructor {
         ServerEntityEvents.LOAD.register(MobHuntingHandler::onEntityLoad);
         PlayerCopyEvents.COPY.register(SoulboundItems::onCopy);
         LivingDropsCallback.EVENT.register(SoulboundItems::onLivingDrops);
-        RegisterPotionBrewingMixesCallback.EVENT.register(EnderZoology::registerBrewingRecipes);
         UseItemEvents.FINISH.register(DireWolf::onUseItemFinish);
     }
 
@@ -83,15 +85,14 @@ public class EnderZoology implements ModConstructor {
 
     private static void registerChargeBehavior(Block block, EnderExplosionType enderExplosionType) {
         DispenserBlock.registerBehavior(block, new DefaultDispenseItemBehavior() {
-
             @Override
-            protected ItemStack execute(BlockSource blockSource, ItemStack stack) {
-                Level level = blockSource.level();
-                BlockPos blockpos = blockSource.pos().relative(blockSource.state().getValue(DispenserBlock.FACING));
+            protected ItemStack execute(BlockSource source, ItemStack dispensed) {
+                Level level = source.level();
+                BlockPos pos = source.pos().relative(source.state().getValue(DispenserBlock.FACING));
                 PrimedTnt primedTnt = new PrimedCharge(level,
-                        (double) blockpos.getX() + 0.5,
-                        blockpos.getY(),
-                        (double) blockpos.getZ() + 0.5,
+                        pos.getX() + 0.5,
+                        pos.getY(),
+                        pos.getZ() + 0.5,
                         null,
                         enderExplosionType);
                 level.addFreshEntity(primedTnt);
@@ -103,32 +104,11 @@ public class EnderZoology implements ModConstructor {
                         SoundSource.BLOCKS,
                         1.0F,
                         1.0F);
-                level.gameEvent(null, GameEvent.ENTITY_PLACE, blockpos);
-                stack.shrink(1);
-                return stack;
+                level.gameEvent(null, GameEvent.ENTITY_PLACE, pos);
+                dispensed.shrink(1);
+                return dispensed;
             }
         });
-    }
-
-    private static void registerBrewingRecipes(RegisterPotionBrewingMixesCallback.Builder builder) {
-        builder.registerPotionRecipe(Potions.AWKWARD,
-                ModItems.ENDER_FRAGMENT_ITEM.value(),
-                ModPotions.DISPLACEMENT_POTION);
-        builder.registerPotionRecipe(ModPotions.DISPLACEMENT_POTION,
-                Items.GLOWSTONE_DUST,
-                ModPotions.STRONG_DISPLACEMENT_POTION);
-        builder.registerPotionRecipe(Potions.AWKWARD, ModItems.WITHERING_DUST_ITEM.value(), ModPotions.DECAY_POTION);
-        builder.registerPotionRecipe(ModPotions.DECAY_POTION, Items.REDSTONE, ModPotions.LONG_DECAY_POTION);
-        builder.registerPotionRecipe(ModPotions.DECAY_POTION, Items.GLOWSTONE_DUST, ModPotions.STRONG_DECAY_POTION);
-        builder.registerPotionRecipe(Potions.AWKWARD,
-                ModItems.CONFUSING_POWDER_ITEM.value(),
-                ModPotions.CONFUSION_POTION);
-        builder.registerPotionRecipe(ModPotions.CONFUSION_POTION, Items.REDSTONE, ModPotions.LONG_CONFUSION_POTION);
-        builder.registerPotionRecipe(ModPotions.CONFUSION_POTION,
-                Items.GLOWSTONE_DUST,
-                ModPotions.STRONG_CONFUSION_POTION);
-        builder.registerPotionRecipe(Potions.AWKWARD, ModItems.OWL_EGG_ITEM.value(), ModPotions.RISING_POTION);
-        builder.registerPotionRecipe(ModPotions.RISING_POTION, Items.REDSTONE, ModPotions.LONG_RISING_POTION);
     }
 
     @Override
@@ -201,62 +181,64 @@ public class EnderZoology implements ModConstructor {
     }
 
     @Override
-    public void onRegisterBiomeModifications(BiomeModificationsContext context) {
-        context.registerBiomeModification(BiomeLoadingPhase.ADDITIONS, (BiomeLoadingContext biomeLoadingContext) -> {
-            return biomeLoadingContext.canGenerateIn(LevelStem.OVERWORLD);
-        }, (BiomeModificationContext biomeModificationContext) -> {
-            MobSpawnSettingsContext settings = biomeModificationContext.mobSpawnSettings();
-            if (CONFIG.get(CommonConfig.class).concussionCreeper) {
-                SpawnerDataBuilder.create(settings, EntityTypes.CREEPER)
-                        .setWeight(Fraction.ONE_QUARTER)
-                        .apply(ModEntityTypes.CONCUSSION_CREEPER_ENTITY_TYPE.value());
-            }
+    public void onRegisterBiomeTransformations(BiomeTransformationsContext context) {
+        context.registerBiomeTransformation(BiomeLoadingPhase.ADD,
+                (HolderGetter.Provider provider, Holder<Biome> biome) -> {
+                    return biome.is(BiomeTags.IS_OVERWORLD) || biome.is(ModTags.Biomes.IS_OVERWORLD);
+                },
+                (HolderGetter.Provider _, Holder<Biome> _, BiomeTransformer.Context transformation) -> {
+                    MobSpawnsContext settings = transformation.mobSpawns();
+                    if (CONFIG.get(CommonConfig.class).concussionCreeper) {
+                        SpawnerDataBuilder.create(settings, EntityTypes.CREEPER)
+                                .setWeight(Fraction.ONE_QUARTER)
+                                .apply(ModEntityTypes.CONCUSSION_CREEPER_ENTITY_TYPE.value());
+                    }
 
-            if (CONFIG.get(CommonConfig.class).infestedZombie) {
-                SpawnerDataBuilder.create(settings, EntityTypes.ZOMBIE)
-                        .setWeight(Fraction.ONE_QUARTER)
-                        .setMinCount(1)
-                        .apply(ModEntityTypes.INFESTED_ZOMBIE_ENTITY_TYPE.value());
-            }
+                    if (CONFIG.get(CommonConfig.class).infestedZombie) {
+                        SpawnerDataBuilder.create(settings, EntityTypes.ZOMBIE)
+                                .setWeight(Fraction.ONE_QUARTER)
+                                .setMinCount(1)
+                                .apply(ModEntityTypes.INFESTED_ZOMBIE_ENTITY_TYPE.value());
+                    }
 
-            if (CONFIG.get(CommonConfig.class).fallenKnight) {
-                SpawnerDataBuilder.create(settings, EntityTypes.ZOMBIE)
-                        .setWeight(Fraction.ONE_QUARTER)
-                        .setMinCount(4)
-                        .setMaxCount(6)
-                        .apply(ModEntityTypes.FALLEN_KNIGHT_ENTITY_TYPE.value());
-            }
+                    if (CONFIG.get(CommonConfig.class).fallenKnight) {
+                        SpawnerDataBuilder.create(settings, EntityTypes.ZOMBIE)
+                                .setWeight(Fraction.ONE_QUARTER)
+                                .setMinCount(4)
+                                .setMaxCount(6)
+                                .apply(ModEntityTypes.FALLEN_KNIGHT_ENTITY_TYPE.value());
+                    }
 
-            if (CONFIG.get(CommonConfig.class).enderminy) {
-                SpawnerDataBuilder.create(settings, EntityTypes.ENDERMAN)
-                        .setWeight(Fraction.getFraction(3, 1))
-                        .setMinCount(Fraction.getFraction(4, 1))
-                        .apply(ModEntityTypes.ENDERMINY_ENTITY_TYPE.value());
-            }
+                    if (CONFIG.get(CommonConfig.class).enderminy) {
+                        SpawnerDataBuilder.create(settings, EntityTypes.ENDERMAN)
+                                .setWeight(Fraction.getFraction(3, 1))
+                                .setMinCount(Fraction.getFraction(4, 1))
+                                .apply(ModEntityTypes.ENDERMINY_ENTITY_TYPE.value());
+                    }
 
-            if (CONFIG.get(CommonConfig.class).direWolf) {
-                if (biomeModificationContext.climateSettings().hasPrecipitation()
-                        && biomeModificationContext.climateSettings().getTemperature() < 0.0F) {
-                    SpawnerDataBuilder.create(settings, EntityTypes.WOLF)
-                            .setWeight(Fraction.ONE_QUARTER)
-                            .setMinCount(3)
-                            .setMaxCount(8)
-                            .apply(ModEntityTypes.DIRE_WOLF_ENTITY_TYPE.value());
-                }
-            }
+                    if (CONFIG.get(CommonConfig.class).direWolf) {
+                        if (transformation.climate().hasPrecipitation()
+                                && transformation.climate().getTemperature() < 0.0F) {
+                            SpawnerDataBuilder.create(settings, EntityTypes.WOLF)
+                                    .setWeight(Fraction.ONE_QUARTER)
+                                    .setMinCount(3)
+                                    .setMaxCount(8)
+                                    .apply(ModEntityTypes.DIRE_WOLF_ENTITY_TYPE.value());
+                        }
+                    }
 
-            if (CONFIG.get(CommonConfig.class).witherWitch) {
-                SpawnerDataBuilder.create(settings, EntityTypes.WITCH)
-                        .apply(ModEntityTypes.WITHER_WITCH_ENTITY_TYPE.value());
-            }
+                    if (CONFIG.get(CommonConfig.class).witherWitch) {
+                        SpawnerDataBuilder.create(settings, EntityTypes.WITCH)
+                                .apply(ModEntityTypes.WITHER_WITCH_ENTITY_TYPE.value());
+                    }
 
-            if (CONFIG.get(CommonConfig.class).owl) {
-                if (biomeModificationContext.climateSettings().hasPrecipitation()) {
-                    SpawnerDataBuilder.create(settings, EntityTypes.RABBIT)
-                            .apply(ModEntityTypes.OWL_ENTITY_TYPE.value());
-                }
-            }
-        });
+                    if (CONFIG.get(CommonConfig.class).owl) {
+                        if (transformation.climate().hasPrecipitation()) {
+                            SpawnerDataBuilder.create(settings, EntityTypes.RABBIT)
+                                    .apply(ModEntityTypes.OWL_ENTITY_TYPE.value());
+                        }
+                    }
+                });
     }
 
     public static Identifier id(String path) {

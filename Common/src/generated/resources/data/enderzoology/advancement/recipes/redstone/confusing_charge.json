@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderzoology:confusing_charge"
+        "recipes": "enderzoology:confusing_charge"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

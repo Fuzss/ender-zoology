@@ -1,7 +1,7 @@
 package fuzs.enderzoology.common.world.entity.monster;
 
 import fuzs.enderzoology.common.init.ModEntityTypes;
-import fuzs.enderzoology.common.init.ModRegistry;
+import fuzs.enderzoology.common.init.ModTags;
 import fuzs.enderzoology.common.services.CommonAbstractions;
 import fuzs.puzzleslib.common.api.util.v1.ValueSerializationHelper;
 import net.minecraft.core.UUIDUtil;
@@ -82,7 +82,7 @@ public class FallenMount extends AbstractHorse implements Enemy {
                 new NearestAttackableTargetGoal<>(this,
                         AbstractHorse.class,
                         false,
-                        (LivingEntity livingEntity, ServerLevel serverLevel) -> livingEntity.is(ModRegistry.FALLEN_MOUNT_TARGETS_ENTITY_TYPE_TAG)));
+                        (LivingEntity livingEntity, ServerLevel serverLevel) -> livingEntity.is(ModTags.Entities.FALLEN_MOUNT_TARGETS_ENTITY_TYPE_TAG)));
         this.targetSelector.addGoal(3, new NearestAttackableTargetGoal<>(this, IronGolem.class, true));
     }
 

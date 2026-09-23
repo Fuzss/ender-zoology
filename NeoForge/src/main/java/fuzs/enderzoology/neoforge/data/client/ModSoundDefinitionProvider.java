@@ -2,8 +2,8 @@ package fuzs.enderzoology.neoforge.data.client;
 
 import fuzs.enderzoology.common.EnderZoology;
 import fuzs.enderzoology.common.init.ModSoundEvents;
-import fuzs.puzzleslib.common.api.data.v2.core.DataProviderContext;
-import fuzs.puzzleslib.neoforge.api.client.data.v2.AbstractSoundProvider;
+import fuzs.puzzleslib.common.api.data.v3.core.DataProviderContext;
+import fuzs.puzzleslib.neoforge.api.client.data.v3.sounds.AbstractSoundProvider;
 import net.minecraft.sounds.SoundEvents;
 import net.neoforged.neoforge.common.data.SoundDefinitionsProvider;
 
@@ -14,7 +14,7 @@ public class ModSoundDefinitionProvider extends AbstractSoundProvider {
     }
 
     @Override
-    public void addSounds() {
+    public void registerSounds() {
         this.add(ModSoundEvents.DIRE_WOLF_HURT_SOUND_EVENT.value(),
                 SoundDefinitionsProvider.sound(EnderZoology.id("mob/dire_wolf/hurt")));
         this.add(ModSoundEvents.DIRE_WOLF_DEATH_SOUND_EVENT.value(),

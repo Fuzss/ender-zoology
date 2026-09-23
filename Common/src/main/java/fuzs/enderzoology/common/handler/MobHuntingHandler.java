@@ -1,6 +1,6 @@
 package fuzs.enderzoology.common.handler;
 
-import fuzs.enderzoology.common.init.ModRegistry;
+import fuzs.enderzoology.common.init.ModTags;
 import fuzs.enderzoology.common.world.entity.monster.DireWolf;
 import fuzs.enderzoology.common.world.entity.monster.FallenMount;
 import net.minecraft.server.level.ServerLevel;
@@ -19,7 +19,7 @@ public class MobHuntingHandler {
                 mob.goalSelector.addGoal(3, new AvoidEntityGoal<>(mob, DireWolf.class, 16.0F, 1.0, 1.2));
             }
 
-            if (mob.is(ModRegistry.FALLEN_MOUNT_TARGETS_ENTITY_TYPE_TAG)) {
+            if (mob.is(ModTags.Entities.FALLEN_MOUNT_TARGETS_ENTITY_TYPE_TAG)) {
                 mob.goalSelector.addGoal(3, new AvoidEntityGoal<>(mob, FallenMount.class, 16.0F, 1.5, 1.8));
             }
         }

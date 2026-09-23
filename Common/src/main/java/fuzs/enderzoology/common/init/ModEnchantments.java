@@ -1,7 +1,7 @@
 package fuzs.enderzoology.common.init;
 
 import fuzs.enderzoology.common.world.item.enchantment.effects.TeleportEntity;
-import fuzs.puzzleslib.common.api.data.v2.AbstractDatapackRegistriesProvider;
+import fuzs.puzzleslib.common.api.init.v3.registry.ContentRegistrationHelper;
 import net.minecraft.core.HolderGetter;
 import net.minecraft.core.HolderSet;
 import net.minecraft.core.registries.Registries;
@@ -19,7 +19,7 @@ import net.minecraft.world.item.enchantment.effects.AllOf;
 import net.minecraft.world.item.enchantment.effects.ApplyMobEffect;
 import net.minecraft.world.item.enchantment.effects.ChangeItemDamage;
 import net.minecraft.world.level.storage.loot.predicates.LootItemRandomChanceCondition;
-import net.minecraft.world.level.storage.loot.providers.number.EnchantmentLevelProvider;
+import net.minecraft.world.level.storage.loot.providers.number.floats.ContextFloatProviders;
 
 public class ModEnchantments {
     public static final ResourceKey<Enchantment> DECAY_ENCHANTMENT = ModRegistry.REGISTRIES.registerEnchantment("decay");
@@ -32,7 +32,7 @@ public class ModEnchantments {
 
     public static void boostrap(BootstrapContext<Enchantment> context) {
         HolderGetter<Item> itemLookup = context.lookup(Registries.ITEM);
-        AbstractDatapackRegistriesProvider.registerEnchantment(context,
+        ContentRegistrationHelper.registerEnchantment(context,
                 SOULBOUND_ENCHANTMENT,
                 Enchantment.enchantment(Enchantment.definition(itemLookup.getOrThrow(ItemTags.VANISHING_ENCHANTABLE),
                         1,
@@ -41,7 +41,7 @@ public class ModEnchantments {
                         Enchantment.dynamicCost(65, 9),
                         8,
                         EquipmentSlotGroup.MAINHAND)));
-        AbstractDatapackRegistriesProvider.registerEnchantment(context,
+        ContentRegistrationHelper.registerEnchantment(context,
                 DECAY_ENCHANTMENT,
                 Enchantment.enchantment(Enchantment.definition(itemLookup.getOrThrow(ItemTags.MELEE_WEAPON_ENCHANTABLE),
                                 2,
@@ -58,7 +58,7 @@ public class ModEnchantments {
                                         LevelBasedValue.perLevel(5.0F, 5.0F),
                                         LevelBasedValue.constant(0.0F),
                                         LevelBasedValue.constant(0.0F))));
-        AbstractDatapackRegistriesProvider.registerEnchantment(context,
+        ContentRegistrationHelper.registerEnchantment(context,
                 WITHERING_ENCHANTMENT,
                 Enchantment.enchantment(Enchantment.definition(itemLookup.getOrThrow(ItemTags.BOW_ENCHANTABLE),
                                 2,
@@ -75,7 +75,7 @@ public class ModEnchantments {
                                         LevelBasedValue.perLevel(5.0F, 5.0F),
                                         LevelBasedValue.constant(0.0F),
                                         LevelBasedValue.constant(0.0F))));
-        AbstractDatapackRegistriesProvider.registerEnchantment(context,
+        ContentRegistrationHelper.registerEnchantment(context,
                 REPELLENT_ENCHANTMENT,
                 Enchantment.enchantment(Enchantment.definition(itemLookup.getOrThrow(ItemTags.ARMOR_ENCHANTABLE),
                                 itemLookup.getOrThrow(ItemTags.CHEST_ARMOR_ENCHANTABLE),
@@ -90,7 +90,7 @@ public class ModEnchantments {
                                 EnchantmentTarget.ATTACKER,
                                 AllOf.entityEffects(new TeleportEntity(LevelBasedValue.perLevel(8.0F, 4.0F)),
                                         new ChangeItemDamage(LevelBasedValue.constant(2.0F))),
-                                LootItemRandomChanceCondition.randomChance(EnchantmentLevelProvider.forEnchantmentLevel(
+                                LootItemRandomChanceCondition.randomChance(ContextFloatProviders.forEnchantmentLevel(
                                         LevelBasedValue.perLevel(0.15F)))));
     }
 }

@@ -1,6 +1,6 @@
 package fuzs.enderzoology.common.world.level;
 
-import fuzs.enderzoology.common.init.ModRegistry;
+import fuzs.enderzoology.common.init.ModTags;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
@@ -10,9 +10,10 @@ import net.minecraft.world.entity.EntitySpawnReason;
 import net.minecraft.world.entity.EntityTypes;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.animal.fox.Fox;
-import net.minecraft.world.entity.monster.EnderMan;
+import net.minecraft.world.entity.monster.Enderman;
 import net.minecraft.world.entity.monster.Endermite;
 import net.minecraft.world.entity.monster.Shulker;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.gamerules.GameRules;
 import net.minecraft.world.phys.Vec3;
@@ -24,7 +25,7 @@ public class EnderTeleportHelper {
     }
 
     public static void teleportEntity(ServerLevel level, LivingEntity entity, int teleportRange, boolean endermiteChance, boolean forceTeleport) {
-        if (forceTeleport || !entity.is(ModRegistry.CONCUSSION_IMMUNE_ENTITY_TYPE_TAG)) {
+        if (forceTeleport || !entity.is(ModTags.Entities.CONCUSSION_IMMUNE_ENTITY_TYPE_TAG)) {
             for (int i = 0; i < 16; ++i) {
                 double randomX = entity.getX() + (entity.getRandom().nextDouble() - 0.5) * teleportRange * 2;
                 double randomY = Mth.clamp(
@@ -37,7 +38,7 @@ public class EnderTeleportHelper {
                 }
 
                 Vec3 vec3 = entity.position();
-                if (entity.randomTeleport(randomX, randomY, randomZ, true)) {
+                if (entity.randomTeleport(randomX, randomY, randomZ, true, (BlockState blockState) -> false)) {
                     level.gameEvent(GameEvent.TELEPORT, vec3, GameEvent.Context.of(entity));
                     SoundEvent soundEvent = getEntityTeleportSound(entity);
                     level.playSound(null,
@@ -69,7 +70,7 @@ public class EnderTeleportHelper {
             return SoundEvents.FOX_TELEPORT;
         } else if (entity instanceof Shulker) {
             return SoundEvents.SHULKER_TELEPORT;
-        } else if (entity instanceof EnderMan) {
+        } else if (entity instanceof Enderman) {
             return SoundEvents.ENDERMAN_TELEPORT;
         } else {
             return SoundEvents.CHORUS_FRUIT_TELEPORT;

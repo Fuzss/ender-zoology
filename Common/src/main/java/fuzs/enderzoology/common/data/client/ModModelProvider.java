@@ -2,9 +2,9 @@ package fuzs.enderzoology.common.data.client;
 
 import fuzs.enderzoology.common.init.ModBlocks;
 import fuzs.enderzoology.common.init.ModItems;
-import fuzs.puzzleslib.common.api.client.data.v2.AbstractModelProvider;
-import fuzs.puzzleslib.common.api.client.data.v2.models.ItemModelGenerationHelper;
-import fuzs.puzzleslib.common.api.data.v2.core.DataProviderContext;
+import fuzs.puzzleslib.common.api.client.data.v3.models.AbstractModelProvider;
+import fuzs.puzzleslib.common.api.client.data.v3.models.ItemModelGenerationHelper;
+import fuzs.puzzleslib.common.api.data.v3.core.DataProviderContext;
 import net.minecraft.client.data.models.BlockModelGenerators;
 import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.data.models.model.ModelTemplates;
@@ -18,11 +18,11 @@ public class ModModelProvider extends AbstractModelProvider {
 
     @Override
     public void addBlockModels(BlockModelGenerators blockModelGenerators) {
-        blockModelGenerators.createTrivialBlock(ModBlocks.ENDER_CHARGE_BLOCK.value(), TexturedModel.CUBE_TOP_BOTTOM);
+        blockModelGenerators.createTrivialBlock(ModBlocks.ENDER_CHARGE_BLOCK.value(), TexturedModel.CUBE_BOTTOM_TOP);
         blockModelGenerators.createTrivialBlock(ModBlocks.CONFUSING_CHARGE_BLOCK.value(),
-                TexturedModel.CUBE_TOP_BOTTOM);
+                TexturedModel.CUBE_BOTTOM_TOP);
         blockModelGenerators.createTrivialBlock(ModBlocks.CONCUSSION_CHARGE_BLOCK.value(),
-                TexturedModel.CUBE_TOP_BOTTOM);
+                TexturedModel.CUBE_BOTTOM_TOP);
     }
 
     @Override

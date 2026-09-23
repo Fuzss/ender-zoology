@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderzoology:enderios"
+        "recipes": "enderzoology:enderios"
       },
       "trigger": "minecraft:recipe_unlocked"
     }

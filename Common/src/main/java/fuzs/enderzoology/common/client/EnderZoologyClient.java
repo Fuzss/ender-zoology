@@ -1,8 +1,8 @@
 package fuzs.enderzoology.common.client;
 
 import fuzs.enderzoology.common.client.handler.FovModifierHandler;
-import fuzs.enderzoology.common.client.model.geom.ModModelLayers;
 import fuzs.enderzoology.common.client.model.animal.owl.OwlModel;
+import fuzs.enderzoology.common.client.model.geom.ModModelLayers;
 import fuzs.enderzoology.common.client.renderer.entity.*;
 import fuzs.enderzoology.common.init.ModEntityTypes;
 import fuzs.puzzleslib.common.api.client.core.v1.ClientModConstructor;
@@ -10,7 +10,7 @@ import fuzs.puzzleslib.common.api.client.core.v1.context.EntityRenderersContext;
 import fuzs.puzzleslib.common.api.client.core.v1.context.EntitySpectatorShadersContext;
 import fuzs.puzzleslib.common.api.client.core.v1.context.LayerDefinitionsContext;
 import fuzs.puzzleslib.common.api.client.event.v1.entity.player.ComputeFovModifierCallback;
-import fuzs.puzzleslib.common.api.client.event.v1.renderer.RenderHandEvents;
+import fuzs.puzzleslib.common.api.client.event.v1.renderer.SubmitArmWithItemCallback;
 import net.minecraft.client.model.HumanoidModel;
 import net.minecraft.client.model.animal.equine.AbstractEquineModel;
 import net.minecraft.client.model.animal.feline.AdultOcelotModel;
@@ -38,7 +38,7 @@ public class EnderZoologyClient implements ClientModConstructor {
 
     private static void registerEventHandlers() {
         ComputeFovModifierCallback.EVENT.register(FovModifierHandler::onComputeFovModifier);
-        RenderHandEvents.BOTH.register(FovModifierHandler::onRenderBothHands);
+        SubmitArmWithItemCallback.EVENT.register(FovModifierHandler::onSubmitArmWithItem);
     }
 
     @Override
@@ -47,8 +47,7 @@ public class EnderZoologyClient implements ClientModConstructor {
         context.registerEntityRenderer(ModEntityTypes.PRIMED_CHARGE_ENTITY_TYPE.value(), TntRenderer::new);
         context.registerEntityRenderer(ModEntityTypes.CONCUSSION_CREEPER_ENTITY_TYPE.value(),
                 ConcussionCreeperRenderer::new);
-        context.registerEntityRenderer(ModEntityTypes.INFESTED_ZOMBIE_ENTITY_TYPE.value(),
-                InfestedZombieRenderer::new);
+        context.registerEntityRenderer(ModEntityTypes.INFESTED_ZOMBIE_ENTITY_TYPE.value(), InfestedZombieRenderer::new);
         context.registerEntityRenderer(ModEntityTypes.ENDERMINY_ENTITY_TYPE.value(), EnderminyRenderer::new);
         context.registerEntityRenderer(ModEntityTypes.DIRE_WOLF_ENTITY_TYPE.value(), DireWolfRenderer::new);
         context.registerEntityRenderer(ModEntityTypes.FALLEN_MOUNT_ENTITY_TYPE.value(), FallenMountRenderer::new);

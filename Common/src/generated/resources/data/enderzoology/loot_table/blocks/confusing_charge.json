@@ -2,27 +2,23 @@
   "type": "minecraft:block",
   "pools": [
     {
-      "conditions": [
-        {
-          "condition": "minecraft:survives_explosion"
-        }
-      ],
+      "condition": {
+        "type": "minecraft:survives_explosion"
+      },
       "entries": [
         {
           "type": "minecraft:item",
-          "conditions": [
-            {
-              "block": "enderzoology:confusing_charge",
-              "condition": "minecraft:block_state_property",
-              "properties": {
-                "unstable": "false"
-              }
+          "condition": {
+            "type": "minecraft:match_block",
+            "blocks": "enderzoology:confusing_charge",
+            "state": {
+              "unstable": "false"
             }
-          ],
+          },
           "name": "enderzoology:confusing_charge"
         }
       ],
-      "rolls": 1.0
+      "rolls": 1
     }
   ],
   "random_sequence": "enderzoology:blocks/confusing_charge"

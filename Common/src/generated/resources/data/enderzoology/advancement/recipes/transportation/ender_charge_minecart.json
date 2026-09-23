@@ -13,7 +13,7 @@
     },
     "has_the_recipe": {
       "conditions": {
-        "recipe": "enderzoology:ender_charge_minecart"
+        "recipes": "enderzoology:ender_charge_minecart"
       },
       "trigger": "minecraft:recipe_unlocked"
     }
