@@ -6,6 +6,7 @@ import fuzs.puzzleslib.common.api.event.v1.core.EventResult;
 import fuzs.puzzleslib.common.api.event.v1.data.MutableFloat;
 import net.minecraft.client.renderer.FirstPersonHandsAndItemsRenderer;
 import net.minecraft.client.renderer.SubmitNodeCollector;
+import net.minecraft.client.renderer.entity.state.AvatarRenderState;
 import net.minecraft.client.renderer.state.level.FirstPersonHandsAndItemsRenderState;
 import net.minecraft.client.renderer.state.level.PlayerRenderState;
 import net.minecraft.util.Mth;
@@ -30,18 +31,17 @@ public class FovModifierHandler {
     }
 
     public static EventResult onSubmitArmWithItem(FirstPersonHandsAndItemsRenderer handsAndItemsRenderer, PlayerRenderState playerState, FirstPersonHandsAndItemsRenderState state, float partialTicks, float xRot, InteractionHand hand, float attack, ItemStack itemStack, float inverseArmHeight, PoseStack poseStack, SubmitNodeCollector submitNodeCollector, int lightCoords) {
-        if (state.useItemRemainingTicks <= 0) {
+        AvatarRenderState avatarRenderState = playerState.avatarRenderState;
+        if (avatarRenderState == null || !avatarRenderState.isUsingItem) {
             return EventResult.PASS;
         }
 
-        if (hand == InteractionHand.MAIN_HAND && state.offHandItem.is(ModItems.HUNTING_BOW_ITEM)) {
-            return EventResult.INTERRUPT;
+        if (avatarRenderState.useItemHand == hand) {
+            return EventResult.PASS;
         }
 
-        if (hand == InteractionHand.OFF_HAND && state.mainHandItem.is(ModItems.HUNTING_BOW_ITEM)) {
-            return EventResult.INTERRUPT;
-        }
-
-        return EventResult.PASS;
+        ItemStack usedItem =
+                avatarRenderState.useItemHand == InteractionHand.MAIN_HAND ? state.mainHandItem : state.offHandItem;
+        return usedItem.is(ModItems.HUNTING_BOW_ITEM) ? EventResult.INTERRUPT : EventResult.PASS;
     }
 }
